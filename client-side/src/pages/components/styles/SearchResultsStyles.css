@@ -49,6 +49,8 @@
   font-family: "Montserrat";
   padding-left: 15px;
   margin-bottom: 20px;
+  position: relative;
+  z-index: 2;
 }
 
 .trailer-bttn {

@@ -9,7 +9,7 @@ from flask import Flask, request, render_template, jsonify
 def createSimilarity():
     data = pd.read_csv('main_data.csv') # reading the dataset
     cv = CountVectorizer()
-    countMatrix = cv.fit_transform(data['comb'])
+    countMatrix = cv.fit_transform(data['comb'])    # text to vector
     similarity = cosine_similarity(countMatrix) # creating the similarity matrix
     return (data, similarity)
 
@@ -29,13 +29,13 @@ def Recommend(movie):
         return 'Sorry! The movie you requested is not present in our database.'
     else:
         movieIndex = data.loc[data['movie_title'] == movie].index[0]
-        lst = list(enumerate(similarity[movieIndex]))
-        lst = sorted(lst, key=lambda x: x[1], reverse=True)
+        lst = list(enumerate(similarity[movieIndex]))   #[(0, 0.00012), (1, 0.00101), (2, 0.00001), ...]
+        lst = sorted(lst, key=lambda x: x[1], reverse=True) #[(120, 0.70010), (4951, 0.65002), ...]
         lst = lst[1:20]  # excluding first item since it is the requested movie itself and taking the top20 movies
         movieList = []
         for i in range(len(lst)):
-            a = lst[i][0]
-            movieList.append(data['movie_title'][a])
+            a = lst[i][0]   #index of the i'th movie among 20movies [(120, 0.70010), ...] to 120,  
+            movieList.append(data['movie_title'][a]) #retreve the actual name of the movie of index 120 then 4951 etc.
         return movieList
 
 
